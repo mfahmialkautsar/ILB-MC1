@@ -1,6 +1,6 @@
 import Foundation
 
-struct CreatedBy: Codable {
+struct CreatedByResponse: Codable {
     let id: Int
     let creditID, name: String?
     let gender: Int?

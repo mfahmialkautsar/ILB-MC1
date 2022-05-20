@@ -1,6 +1,6 @@
 import Foundation
 
-enum MediaType: String, Codable {
+enum MediaTypeResponse: String, Codable {
     case movie = "movie"
     case person = "person"
     case tv = "tv"

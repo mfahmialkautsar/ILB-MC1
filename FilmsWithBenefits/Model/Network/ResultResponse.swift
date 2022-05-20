@@ -1,24 +1,24 @@
 import Foundation
 
-struct Result: Codable {
+struct ResultResponse: Codable {
     let posterPath: String?
     let popularity: Double?
     let id: Int
     let overview: String?
     let backdropPath: String?
     let voteAverage: Double?
-    let mediaType: MediaType?
+    let mediaType: MediaTypeResponse?
     let firstAirDate: String?
     let originCountry: [String]?
     let genreIDS: [Int]?
-//    let originalLanguage: OriginalLanguage?
+//    let originalLanguage: OriginalLanguageResponse?
     let voteCount: Int?
     let name, originalName: String?
     let adult: Bool?
     let releaseDate, originalTitle, title: String?
     let video: Bool?
     let profilePath: String?
-    let knownFor: [Result]?
+    let knownFor: [ResultResponse]?
 
     enum CodingKeys: String, CodingKey {
         case posterPath = "poster_path"

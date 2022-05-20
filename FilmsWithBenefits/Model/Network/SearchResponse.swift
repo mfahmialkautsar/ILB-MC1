@@ -1,8 +1,8 @@
 import Foundation
 
-struct Search: Codable {
+struct SearchResponse: Codable {
     let page: Int?
-    let results: [Result]?
+    let results: [ResultResponse]
     let totalResults, totalPages: Int?
 
     enum CodingKeys: String, CodingKey {

@@ -1,6 +1,6 @@
 import Foundation
 
-struct Season: Codable {
+struct SeasonResponse: Codable {
     let airDate: String?
     let episodeCount: Int?
     let id: Int

@@ -23,8 +23,8 @@ fileprivate protocol Endpoint {
 enum Endpoints {
     enum Gets: Endpoint {
         case byName(String)
-        case movieById(String)
-        case tvById(String)
+        case movieById(Int)
+        case tvById(Int)
 
         public var url: String {
             switch self {

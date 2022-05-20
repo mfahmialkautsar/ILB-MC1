@@ -1,6 +1,6 @@
 import Foundation
 
-struct Network: Codable {
+struct NetworkResponse: Codable {
     let name: String?
     let id: Int
     let logoPath: String?

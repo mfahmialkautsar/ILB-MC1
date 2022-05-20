@@ -1,29 +1,29 @@
 import Foundation
 
-struct Tv: Codable {
+struct TvResponse: Codable {
     let backdropPath: String?
-    let createdBy: [CreatedBy]?
+    let createdBy: [CreatedByResponse]?
     let episodeRunTime: [Int]?
     let firstAirDate: String?
-    let genres: [Genre]?
+    let genres: [GenreResponse]?
     let homepage: String?
     let id: Int
     let inProduction: Bool?
     let languages: [String]?
     let lastAirDate: String?
-    let lastEpisodeToAir: LastEpisodeToAir?
+    let lastEpisodeToAir: LastEpisodeToAirResponse?
     let name: String?
-    let nextEpisodeToAir: JSONNull?
-    let networks: [Network]?
+    let nextEpisodeToAir: JSONNullResponse?
+    let networks: [NetworkResponse]?
     let numberOfEpisodes, numberOfSeasons: Int?
     let originCountry: [String]?
     let originalLanguage, originalName, overview: String?
     let popularity: Double?
     let posterPath: String?
-    let productionCompanies: [Network]?
-    let productionCountries: [ProductionCountry]?
-    let seasons: [Season]?
-    let spokenLanguages: [SpokenLanguage]?
+    let productionCompanies: [NetworkResponse]?
+    let productionCountries: [ProductionCountryResponse]?
+    let seasons: [SeasonResponse]?
+    let spokenLanguages: [SpokenLanguageResponse]?
     let status, tagline, type: String?
     let voteAverage: Double?
     let voteCount: Int?

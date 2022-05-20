@@ -1,8 +1,8 @@
 import Foundation
 
-class JSONNull: Codable, Hashable {
+class JSONNullResponse: Codable, Hashable {
 
-    public static func == (lhs: JSONNull, rhs: JSONNull) -> Bool {
+    public static func == (lhs: JSONNullResponse, rhs: JSONNullResponse) -> Bool {
         return true
     }
 
@@ -15,7 +15,7 @@ class JSONNull: Codable, Hashable {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if !container.decodeNil() {
-            throw DecodingError.typeMismatch(JSONNull.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
+            throw DecodingError.typeMismatch(JSONNullResponse.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for JSONNull"))
         }
     }
 

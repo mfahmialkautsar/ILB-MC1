@@ -1,21 +1,21 @@
 import Foundation
 
-struct Movie: Codable {
+struct MovieResponse: Codable {
     let adult: Bool?
     let backdropPath: String?
-    let belongsToCollection: JSONNull?
+    let belongsToCollection: JSONNullResponse?
     let budget: Int?
-    let genres: [Genre]?
+    let genres: [GenreResponse]?
     let homepage: String?
     let id: Int
     let imdbID, originalLanguage, originalTitle, overview: String?
     let popularity: Double?
-    let posterPath: JSONNull?
-    let productionCompanies: [ProductionCompany]?
-    let productionCountries: [ProductionCountry]?
+    let posterPath: String?
+    let productionCompanies: [ProductionCompanyResponse]?
+    let productionCountries: [ProductionCountryResponse]?
     let releaseDate: String?
     let revenue, runtime: Int?
-    let spokenLanguages: [SpokenLanguage]?
+    let spokenLanguages: [SpokenLanguageResponse]?
     let status, tagline, title: String?
     let video: Bool?
     let voteAverage: Double?

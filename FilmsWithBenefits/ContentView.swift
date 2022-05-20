@@ -19,7 +19,7 @@ struct ContentView: View {
         return missionsDao.map { $0.toDomain() }
     }
 
-    private let client = Client()
+    private let repository = Repository()
 
     var body: some View {
         NavigationView {
@@ -49,7 +49,7 @@ struct ContentView: View {
             Text("Select an missionDao")
         }
         .onAppear {
-            client.search("alone") { result in
+            repository.fetchTvById(60718) { result in
                 switch result {
                 case let .success(response):
                     print(response)

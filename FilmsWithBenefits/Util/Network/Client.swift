@@ -20,7 +20,7 @@ final class Client {
         return URLSession(configuration: config)
     }
 
-    func search(_ keyword: String, completion: @escaping (NetworkResult<Search, ErrorResponse>) -> Void) {
+    func search(_ keyword: String, completion: @escaping (RequestResult<SearchResponse, ErrorResponse>) -> Void) {
         let queue = DispatchQueue(label: "searchFilms", qos: .userInteractive)
         let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.byName(keyword).url)!)
         queue.async {
@@ -30,26 +30,98 @@ final class Client {
                     case -999:
                         return
                     default:
-                        completion(NetworkResult.failure(ErrorResponse.error(error.code, error.localizedDescription)))
+                        completion(RequestResult.failure(ErrorResponse.error(error.code, error.localizedDescription)))
                         return
                     }
                 }
 
                 guard let response = response as? HTTPURLResponse else {
-                    completion(NetworkResult.failure(ErrorResponse.error(0, "Response Error")))
+                    completion(RequestResult.failure(ErrorResponse.error(0, "Response Error")))
                     return
                 }
 
                 switch response.statusCode {
                 case 200 ... 299:
-                    guard let data = data, let films = try? JSONDecoder().decode(Search.self, from: data) else {
-                        completion(NetworkResult.failure(ErrorResponse.error(response.statusCode, response.description)))
+                    guard let data = data, let films = try? JSONDecoder().decode(SearchResponse.self, from: data) else {
+                        completion(RequestResult.failure(ErrorResponse.error(response.statusCode, response.description)))
                         return
                     }
 
-                    completion(NetworkResult.success(films))
+                    completion(RequestResult.success(films))
                 default:
-                    completion(NetworkResult.failure(ErrorResponse.error(response.statusCode, response.description)))
+                    completion(RequestResult.failure(ErrorResponse.error(response.statusCode, response.description)))
+                }
+            }
+            self.mainTask?.resume()
+        }
+    }
+    
+    func getMovieById(_ id: Int, completion: @escaping (RequestResult<MovieResponse, ErrorResponse>) -> Void) {
+        let queue = DispatchQueue(label: "getMovieById", qos: .userInteractive)
+        let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.movieById(id).url)!)
+        queue.async {
+            self.mainTask = self.session().dataTask(with: urlRequest) { data, response, error in
+                if let error = error as NSError? {
+                    switch error.code {
+                    case -999:
+                        return
+                    default:
+                        completion(RequestResult.failure(ErrorResponse.error(error.code, error.localizedDescription)))
+                        return
+                    }
+                }
+
+                guard let response = response as? HTTPURLResponse else {
+                    completion(RequestResult.failure(ErrorResponse.error(0, "Response Error")))
+                    return
+                }
+
+                switch response.statusCode {
+                case 200 ... 299:
+                    guard let data = data, let films = try? JSONDecoder().decode(MovieResponse.self, from: data) else {
+                        completion(RequestResult.failure(ErrorResponse.error(response.statusCode, response.description)))
+                        return
+                    }
+
+                    completion(RequestResult.success(films))
+                default:
+                    completion(RequestResult.failure(ErrorResponse.error(response.statusCode, response.description)))
+                }
+            }
+            self.mainTask?.resume()
+        }
+    }
+    
+    func getTvById(_ id: Int, completion: @escaping (RequestResult<TvResponse, ErrorResponse>) -> Void) {
+        let queue = DispatchQueue(label: "getMovieById", qos: .userInteractive)
+        let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.tvById(id).url)!)
+        queue.async {
+            self.mainTask = self.session().dataTask(with: urlRequest) { data, response, error in
+                if let error = error as NSError? {
+                    switch error.code {
+                    case -999:
+                        return
+                    default:
+                        completion(RequestResult.failure(ErrorResponse.error(error.code, error.localizedDescription)))
+                        return
+                    }
+                }
+
+                guard let response = response as? HTTPURLResponse else {
+                    completion(RequestResult.failure(ErrorResponse.error(0, "Response Error")))
+                    return
+                }
+
+                switch response.statusCode {
+                case 200 ... 299:
+                    guard let data = data, let films = try? JSONDecoder().decode(TvResponse.self, from: data) else {
+                        completion(RequestResult.failure(ErrorResponse.error(response.statusCode, response.description)))
+                        return
+                    }
+
+                    completion(RequestResult.success(films))
+                default:
+                    completion(RequestResult.failure(ErrorResponse.error(response.statusCode, response.description)))
                 }
             }
             self.mainTask?.resume()

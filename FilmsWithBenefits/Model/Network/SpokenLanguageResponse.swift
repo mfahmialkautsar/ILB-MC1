@@ -1,6 +1,6 @@
 import Foundation
 
-struct SpokenLanguage: Codable {
+struct SpokenLanguageResponse: Codable {
     let englishName, iso639_1, name: String?
 
     enum CodingKeys: String, CodingKey {

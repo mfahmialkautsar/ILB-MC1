@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProductionCompany: Codable {
+struct ProductionCompanyResponse: Codable {
     let id: Int
     let logoPath: String?
     let name, originCountry: String?

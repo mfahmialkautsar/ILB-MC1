@@ -1,6 +1,6 @@
 import Foundation
 
-struct ProductionCountry: Codable {
+struct ProductionCountryResponse: Codable {
     let iso3166_1, name: String?
 
     enum CodingKeys: String, CodingKey {

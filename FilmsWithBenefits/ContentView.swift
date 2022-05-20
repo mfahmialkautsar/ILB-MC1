@@ -5,25 +5,33 @@
 //  Created by Muhamad Fahmi Al Kautsar on 19/05/22.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \MissionDao.timestamp, ascending: true)],
         animation: .default)
-    private var items: FetchedResults<Item>
+    private var missionsDao: FetchedResults<MissionDao>
+    private var missions: [Mission] {
+        return missionsDao.map { $0.toDomain() }
+    }
+
+    private let client = Client()
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(items) { item in
+                ForEach(missions, id: \.id) { mission in
                     NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                        Text("MissionDao at \(mission.timestamp, formatter: itemFormatter)")
+                        ForEach(mission.words, id: \.id) { word in
+                            Text("Word = \(word.content)")
+                        }
                     } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+                        Text(mission.timestamp, formatter: itemFormatter)
                     }
                 }
                 .onDelete(perform: deleteItems)
@@ -34,18 +42,28 @@ struct ContentView: View {
                 }
                 ToolbarItem {
                     Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                        Label("Add MissionDao", systemImage: "plus")
                     }
                 }
             }
-            Text("Select an item")
+            Text("Select an missionDao")
+        }
+        .onAppear {
+            client.search("alone") { result in
+                switch result {
+                case let .success(response):
+                    print(response)
+                case let .failure(err):
+                    print("ERROR Fetch", err.localizedDescription)
+                }
+            }
         }
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            let newMission = MissionDao(context: viewContext)
+            newMission.timestamp = Date().timeIntervalSince1970
 
             do {
                 try viewContext.save()
@@ -60,7 +78,7 @@ struct ContentView: View {
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
+            offsets.map { missionsDao[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()

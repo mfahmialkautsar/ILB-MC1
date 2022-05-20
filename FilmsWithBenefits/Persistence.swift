@@ -14,8 +14,15 @@ struct PersistenceController {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
+            let newMission = MissionDao(context: viewContext)
+            let word = WordDao(context: viewContext)
+            word.id = 1
+            word.content = "test"
+            word.timestamp = Date().timeIntervalSince1970
+            newMission.id = 1
+            newMission.filmId = 1
+            newMission.timestamp = Date().timeIntervalSince1970
+            newMission.words = [word]
         }
         do {
             try viewContext.save()

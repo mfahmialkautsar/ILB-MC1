@@ -6,9 +6,9 @@
 //
 
 struct Film {
-    var id: Int
-    var title: String
-    var type: FilmTypeEnum
+    let id: Int
+    let title: String
+    let type: FilmTypeEnum
     let posterPath: String?
     let popularity: Double?
     let overview: String?
@@ -24,6 +24,4 @@ struct Film {
     let releaseDate, originalTitle: String?
     let video: Bool?
     let profilePath: String?
-    var season: Int?
-    var episode: Int?
 }

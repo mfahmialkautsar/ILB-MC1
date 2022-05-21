@@ -8,8 +8,11 @@
 import Foundation
 
 struct Mission {
-    var id: Int
-    var words: [Word]
-    var filmId: Int
-    var timestamp: Date
+    var id: UUID = UUID()
+    var words: [Word] = []
+    var filmNote: FilmNote
+    var wordsTarget: WordsTargetEnum
+    var reminder: Bool = false
+    var finish: Bool = false
+    var timestamp: Date = Date()
 }

@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="20086" systemVersion="21E258" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="MissionDao" representedClassName="MissionDao" syncable="YES" codeGenerationType="class">
-        <attribute name="filmId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="YES"/>
-        <relationship name="words" toMany="YES" deletionRule="Nullify" destinationEntity="WordDao" inverseName="mission" inverseEntity="WordDao"/>
+    <entity name="FilmNoteEntity" representedClassName="FilmNoteEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="episode" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>
+        <attribute name="season" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>
+        <attribute name="title" attributeType="String" defaultValueString=""/>
+        <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="uid" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="mission" toMany="YES" deletionRule="Nullify" destinationEntity="MissionEntity" inverseName="filmNote" inverseEntity="MissionEntity"/>
     </entity>
-    <entity name="WordDao" representedClassName="WordDao" syncable="YES" codeGenerationType="class">
+    <entity name="MissionEntity" representedClassName="MissionEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="finish" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="reminder" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="YES"/>
+        <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="wordsTarget" attributeType="String" customClassName="WordTargetEnum"/>
+        <relationship name="filmNote" maxCount="1" deletionRule="Nullify" destinationEntity="FilmNoteEntity" inverseName="mission" inverseEntity="FilmNoteEntity"/>
+        <relationship name="words" toMany="YES" deletionRule="Nullify" destinationEntity="WordEntity" inverseName="mission" inverseEntity="WordEntity"/>
+    </entity>
+    <entity name="WordEntity" representedClassName="WordEntity" syncable="YES" codeGenerationType="class">
         <attribute name="content" attributeType="String" defaultValueString=""/>
-        <attribute name="id" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="sentence" optional="YES" attributeType="String"/>
         <attribute name="timestamp" attributeType="Date" usesScalarValueType="YES"/>
         <attribute name="translation" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO"/>
-        <relationship name="mission" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MissionDao" inverseName="words" inverseEntity="MissionDao"/>
+        <attribute name="uuid" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="mission" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MissionEntity" inverseName="words" inverseEntity="MissionEntity"/>
     </entity>
     <elements>
-        <element name="MissionDao" positionX="-63" positionY="-18" width="128" height="89"/>
-        <element name="WordDao" positionX="186.3203125" positionY="-48.20703125" width="128" height="119"/>
+        <element name="FilmNoteEntity" positionX="99" positionY="45" width="128" height="119"/>
+        <element name="MissionEntity" positionX="-63" positionY="-18" width="128" height="134"/>
+        <element name="WordEntity" positionX="186.3203125" positionY="-48.20703125" width="128" height="134"/>
     </elements>
 </model>

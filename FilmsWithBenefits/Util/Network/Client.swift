@@ -93,7 +93,7 @@ final class Client {
     }
     
     func getTvById(_ id: Int, completion: @escaping (RequestResult<TvResponse, ErrorResponse>) -> Void) {
-        let queue = DispatchQueue(label: "getMovieById", qos: .userInteractive)
+        let queue = DispatchQueue(label: "getTvById", qos: .userInteractive)
         let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.tvById(id).url)!)
         queue.async {
             self.mainTask = self.session().dataTask(with: urlRequest) { data, response, error in

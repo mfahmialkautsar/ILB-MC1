@@ -12,21 +12,33 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
 
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \MissionDao.timestamp, ascending: true)],
+        sortDescriptors: [NSSortDescriptor(keyPath: \MissionEntity.timestamp, ascending: true)],
         animation: .default)
-    private var missionsDao: FetchedResults<MissionDao>
+    private var missionEntities: FetchedResults<MissionEntity>
     private var missions: [Mission] {
-        return missionsDao.map { $0.toDomain() }
+        return missionEntities.map { $0.toDomain() }
     }
 
     private let repository = Repository()
+
+    let words = [Word(content: "inputted")]
 
     var body: some View {
         NavigationView {
             List {
                 ForEach(missions, id: \.id) { mission in
                     NavigationLink {
-                        Text("MissionDao at \(mission.timestamp, formatter: itemFormatter)")
+                        Text("MissionEntity at \(mission.timestamp, formatter: itemFormatter)")
+                        Text(mission.finish ? "Finished" : "Unfinished")
+                        Button("Add") {
+                            repository.addWord(missionId: mission.id, word: words[0])
+                        }
+                        Button("Del") {
+                            repository.deleteWord(wordId: words[0].id)
+                        }
+                        Button("Finsih") {
+                            repository.finishMission(missionId: mission.id)
+                        }
                         ForEach(mission.words, id: \.id) { word in
                             Text("Word = \(word.content)")
                         }
@@ -42,7 +54,7 @@ struct ContentView: View {
                 }
                 ToolbarItem {
                     Button(action: addItem) {
-                        Label("Add MissionDao", systemImage: "plus")
+                        Label("Add MissionEntity", systemImage: "plus")
                     }
                 }
             }
@@ -62,23 +74,15 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newMission = MissionDao(context: viewContext)
-            newMission.timestamp = Date().timeIntervalSince1970
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            let filmNote = FilmNote(id: 1, title: "", type: .movie)
+            let mission = Mission(filmNote: filmNote, wordsTarget: ._10)
+            repository.addMission(mission: mission)
         }
     }
 
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
-            offsets.map { missionsDao[$0] }.forEach(viewContext.delete)
+            offsets.map { missionEntities[$0] }.forEach(viewContext.delete)
 
             do {
                 try viewContext.save()

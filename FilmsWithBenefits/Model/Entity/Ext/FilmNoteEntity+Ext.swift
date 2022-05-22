@@ -1,5 +1,5 @@
 //
-//  FilmNoteEntity+Mapper.swift
+//  FilmNoteEntity+Ext.swift
 //  FilmsWithBenefits
 //
 //  Created by Muhamad Fahmi Al Kautsar on 20/05/22.

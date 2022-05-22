@@ -12,14 +12,14 @@ class Repository {
     private let client = Client()
     private let persistenceController = PersistenceController.shared
     private let context = PersistenceController.shared.container.viewContext
-    
+
     private func getMission(with uuid: UUID) -> MissionEntity? {
         let request = MissionEntity.fetchRequest()
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(MissionEntity.uuid), uuid as CVarArg)
         guard let missions = try? context.fetch(request) else { return nil }
         return missions.first
     }
-    
+
     private func getWord(with uuid: UUID) -> WordEntity? {
         let request = WordEntity.fetchRequest()
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(WordEntity.uuid), uuid as CVarArg)
@@ -87,23 +87,31 @@ extension Repository {
             print(error)
         }
     }
-    
+
+    func updateWord(word: Word) {
+        guard let wordEntity = getWord(with: word.id) else { return }
+        wordEntity.update(word: word)
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
+
     func deleteWord(wordId: UUID) {
         guard let word = getWord(with: wordId) else { return }
         context.delete(word)
     }
-    
+
     func getUnfinishedMissions() -> [Mission] {
         let request = MissionEntity.fetchRequest()
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(MissionEntity.finish), NSNumber(value: false))
         guard let missions = try? context.fetch(request) else { return [] }
-        print(missions)
         return missions.map { $0.toDomain() }
     }
-    
+
     func finishMission(missionId: UUID) {
-        let mission = getMission(with: missionId)
-        guard let mission = mission else { return }
+        guard let mission = getMission(with: missionId) else { return }
         mission.finish = true
         do {
             try context.save()

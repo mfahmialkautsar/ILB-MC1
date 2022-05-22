@@ -1,5 +1,5 @@
 //
-//  Word+Mapper.swift
+//  Word+Ext.swift
 //  FilmsWithBenefits
 //
 //  Created by Muhamad Fahmi Al Kautsar on 21/05/22.

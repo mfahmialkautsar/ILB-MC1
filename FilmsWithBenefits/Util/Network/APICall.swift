@@ -11,13 +11,10 @@ fileprivate var apiKey: String = ProcessInfo.processInfo.environment["API_KEY"] 
 
 fileprivate struct API {
     static let baseUrl = "https://api.themoviedb.org/3/"
-    static var key: String {
-        return "api_key=\(apiKey)"
-    }
 }
 
 fileprivate protocol Endpoint {
-    var url: String { get }
+    var url: URL { get }
 }
 
 enum Endpoints {
@@ -26,15 +23,21 @@ enum Endpoints {
         case movieById(Int)
         case tvById(Int)
 
-        public var url: String {
+        public var url: URL {
+            var urlString = API.baseUrl
+            var queryItems: [URLQueryItem] = [URLQueryItem(name: "api_key", value: apiKey)]
             switch self {
             case let .byName(query):
-                return "\(API.baseUrl)search/multi?\(API.key)&query=\(query)"
+                queryItems.append(URLQueryItem(name: "query", value: query))
+                urlString = "\(API.baseUrl)search/multi"
             case let .movieById(id):
-                return "\(API.baseUrl)movie/\(id)?\(API.key)"
+                urlString = "\(API.baseUrl)movie/\(id)"
             case let .tvById(id):
-                return "\(API.baseUrl)tv/\(id)?\(API.key)"
+                urlString = "\(API.baseUrl)tv/\(id)"
             }
+            var component = URLComponents(url: URL(string: urlString)!, resolvingAgainstBaseURL: false)
+            component?.queryItems = queryItems
+            return component!.url!
         }
     }
 }

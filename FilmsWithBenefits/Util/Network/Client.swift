@@ -22,7 +22,7 @@ final class Client {
 
     func search(_ keyword: String, completion: @escaping (RequestResult<SearchResponse, ErrorResponse>) -> Void) {
         let queue = DispatchQueue(label: "searchFilms", qos: .userInteractive)
-        let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.byName(keyword).url)!)
+        let urlRequest = URLRequest(url: Endpoints.Gets.byName(keyword).url)
         queue.async {
             self.mainTask = self.session().dataTask(with: urlRequest) { data, response, error in
                 if let error = error as NSError? {
@@ -58,7 +58,7 @@ final class Client {
     
     func getMovieById(_ id: Int, completion: @escaping (RequestResult<MovieResponse, ErrorResponse>) -> Void) {
         let queue = DispatchQueue(label: "getMovieById", qos: .userInteractive)
-        let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.movieById(id).url)!)
+        let urlRequest = URLRequest(url: Endpoints.Gets.movieById(id).url)
         queue.async {
             self.mainTask = self.session().dataTask(with: urlRequest) { data, response, error in
                 if let error = error as NSError? {
@@ -94,7 +94,7 @@ final class Client {
     
     func getTvById(_ id: Int, completion: @escaping (RequestResult<TvResponse, ErrorResponse>) -> Void) {
         let queue = DispatchQueue(label: "getTvById", qos: .userInteractive)
-        let urlRequest = URLRequest(url: URL(string: Endpoints.Gets.tvById(id).url)!)
+        let urlRequest = URLRequest(url: Endpoints.Gets.tvById(id).url)
         queue.async {
             self.mainTask = self.session().dataTask(with: urlRequest) { data, response, error in
                 if let error = error as NSError? {

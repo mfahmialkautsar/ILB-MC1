@@ -36,9 +36,6 @@ struct ContentView: View {
                         Button("Del") {
                             repository.deleteWord(wordId: words[0].id)
                         }
-                        Button("Finsih") {
-                            repository.finishMission(missionId: mission.id)
-                        }
                         ForEach(mission.words, id: \.id) { word in
                             Text("Word = \(word.content)")
                         }
@@ -61,7 +58,7 @@ struct ContentView: View {
             Text("Select an missionDao")
         }
         .onAppear {
-            repository.fetchTvById(60718) { result in
+            repository.fetchFilmsByTitle("toy story") { result in
                 switch result {
                 case let .success(response):
                     print(response)

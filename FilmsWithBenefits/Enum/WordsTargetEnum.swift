@@ -5,7 +5,7 @@
 //  Created by Muhamad Fahmi Al Kautsar on 21/05/22.
 //
 
-enum WordsTargetEnum: String {
+enum WordsTargetEnum: String, CaseIterable {
     case _5 = "5"
     case _10 = "10"
     case _15 = "15"

@@ -26,6 +26,21 @@ class Repository {
         guard let words = try? context.fetch(request) else { return nil }
         return words.first
     }
+
+    private func finishMissionIfQualify(mission: MissionEntity) {
+        guard let wordsTarget = mission.wordsTarget else { return }
+        let wordsTargetInt = Int(wordsTarget) ?? (Int(WordsTargetEnum._25.rawValue) ?? 25) + 1
+        if mission.words?.count ?? 0 >= wordsTargetInt {
+            mission.finish = true
+        } else {
+            mission.finish = false
+        }
+        do {
+            try context.save()
+        } catch {
+            print(error)
+        }
+    }
 }
 
 extension Repository {
@@ -86,6 +101,7 @@ extension Repository {
         } catch {
             print(error)
         }
+        finishMissionIfQualify(mission: mission)
     }
 
     func updateWord(word: Word) {
@@ -101,22 +117,24 @@ extension Repository {
     func deleteWord(wordId: UUID) {
         guard let word = getWord(with: wordId) else { return }
         context.delete(word)
+        guard let missionUuid = word.mission?.uuid, let mission = getMission(with: missionUuid) else { return }
+        finishMissionIfQualify(mission: mission)
     }
 
     func getUnfinishedMissions() -> [Mission] {
         let request = MissionEntity.fetchRequest()
-        request.predicate = NSPredicate(format: "%K == %@", #keyPath(MissionEntity.finish), NSNumber(value: false))
+        request.predicate = NSPredicate(format: "words.@count < wordsTarget")
         guard let missions = try? context.fetch(request) else { return [] }
         return missions.map { $0.toDomain() }
     }
 
-    func finishMission(missionId: UUID) {
-        guard let mission = getMission(with: missionId) else { return }
-        mission.finish = true
-        do {
-            try context.save()
-        } catch {
-            print(error)
-        }
-    }
+//    func finishMission(missionId: UUID) {
+//        guard let mission = getMission(with: missionId) else { return }
+//        mission.finish = true
+//        do {
+//            try context.save()
+//        } catch {
+//            print(error)
+//        }
+//    }
 }
